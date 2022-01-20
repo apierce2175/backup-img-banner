@@ -1,23 +1,22 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 import time
 from PIL import Image
 import pathlib
 
 #  TODOS
-# FOR LOOP TO ADD A BACKUP.PY FOLDER TO EACH FOLDER, FOR LOOP TO RUN EACH BACKUP.PY FILE, THEN A FOR LOOP TO DELETE EACH BACKUP.PY FILE
-# 1. OPEN BANNER FILE
-# 2. TAKE SCREENSHOT OF PAGE
-# 3. CROP SCREENSHOT
-# 4. NAME SCREENSHOT BACKUP.JPG AND SAVE IN CORRECT FOLDER
+# FOR LOOP TO ADD A BACKUP.PY FOLDER TO EACH FOLDER, FOR LOOP TO RUN EACH BACKUP.PY FILE, make headless
+
 
 # browser says were using chrome for webdriver and links to path I have chromedriver file
-browser = webdriver.Chrome('/Users/apierce/chromedriver/chromedriver')
+options = Options()
+options.headless = True
+browser = webdriver.Chrome('/Users/apierce/chromedriver/chromedriver', options=options)
 
 current_path = pathlib.Path(__file__).parent.absolute()
 
 html_path = str(current_path).replace("main.py", "index.html", 1)
 
-# opens chrome to the google homepage
 browser.get('file://' + html_path + '/index.html')
 
 time.sleep(3)
