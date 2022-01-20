@@ -19,17 +19,19 @@ html_path = str(current_path).replace("main.py", "index.html", 1)
 
 # opens the index.html file in folder you run main.py in
 browser.get('file://' + html_path + '/index.html')
+print("opened the file" + 'file://' + html_path + '/index.html')
 
-time.sleep(1)
+time.sleep(3)
 
 # sets banner content to element name that contains all of the banner front end.
 banner_content = browser.find_element_by_tag_name('gwd-page')
-time.sleep(1)
+time.sleep(3)
 
 # screenshots just the banner content (Therefore cropping it to correct size) and saves it as backup.jpg in the same folder you run main.py in
 banner_content.screenshot(html_path + '/backup.jpg')
+print('screenshotted this banner' + 'file://' + html_path + '/index.html' + 'and saved it in the following location' + html_path + '/backup.jpg')
 
-time.sleep(1)
+time.sleep(3)
 
 browser.quit()
 
