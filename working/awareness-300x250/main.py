@@ -8,7 +8,7 @@ from PIL import Image
 import pathlib
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+import os
 
 # FOR LOOP TO ADD A main.py TO EACH FOLDER
 # for d in */ ; do cp main.py $d/ done
@@ -39,4 +39,10 @@ time.sleep(.5)
 # screenshots just the banner_area, and saves it as backup.jpg
 banner_area.screenshot(html_path + '/backup.jpg')
 
+if os.path.exists(html_path + '/main.py'):
+  os.remove(html_path + '/main.py')
+  print('aye')
+else:
+  print(html_path + '/main.py')
+  print('naa')
 browser.quit()
