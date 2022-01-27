@@ -9,8 +9,70 @@ import pathlib
 
 # this script places the py file to create backup images in every banner folder, then it runs every py file to create the backup img
 
-# banner_dir needs a trailing slash path of where your banners are. Needs to be a directory and the only directory in the same level as your run_all_pys file. The pathlib path resolve finds the path to where you are running this py file. The os walk finds the directory in this path, and the slashes are to make sure its written as a trailing slash so it can execute.
+# banner_dir needs a trailing slash path of where your banners are. Needs to be a directory and the only directory in the same level as your run_all_pys file. The pathlib path resolve finds the path to where you are running this py file. The os walk finds the directory in this path, and the slashes are to make sure its written as a trailing slash so it can execute.rm a
 root_dir = str(pathlib.Path().resolve())
+
+f= open("main.py","w+")
+time.sleep(1)
+f.write('''\
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+import time
+from PIL import Image
+import pathlib
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import os
+from selenium.webdriver.common.keys import Keys
+
+
+
+
+# FOR LOOP TO ADD A main.py TO EACH FOLDER
+# for d in */ ; do cp main.py $d/ done
+
+# browser says were using chrome for webdriver headlessly (you dont see the actions happen. This is faster and you can use computer while tasks happen in bg)
+options = Options()
+options.headless = True
+browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+# current path is the file path of where this py file is located
+current_path = pathlib.Path(__file__).parent.absolute()
+
+# html path is the path to the html file in the same folder as your py file
+html_path = str(current_path).replace("main.py", "index.html", 1)
+
+# opens html banner file
+browser.get('file://' + html_path + '/index.html')
+
+# waits to execute next line until the opened page has the element gwd-page loaded (if you dont wait it will run immmediatley and not be able to find the element and not work. If you manually sleep it will add extra time)
+WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.TAG_NAME, "gwd-page")))
+
+# sets banner_area to the banner by finding the tag gwd-page in the html
+banner_area = browser.find_element(By.TAG_NAME, "gwd-page")
+
+# wait for text to load
+time.sleep(.5)
+
+# screenshots just the banner_area, and saves it as backup.jpg
+banner_area.screenshot(html_path + '/backup.jpg')
+dur = browser.execute_script("return [0].duration")
+print(dur)
+
+if os.path.exists(html_path + '/main.py'):
+  os.remove(html_path + '/main.py')
+  print('aye')
+else:
+  print(html_path + '/main.py')
+  print('naa')
+browser.quit()
+
+''')
+time.sleep(1)
+f.flush()
 
 banner_dir = root_dir + '/' + next(os.walk('.'))[1][0] + '/'
 
