@@ -13,7 +13,7 @@ import pathlib
 root_dir = str(pathlib.Path().resolve())
 
 f= open("main.py","w+")
-time.sleep(1)
+
 f.write('''\
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -59,8 +59,6 @@ time.sleep(.5)
 
 # screenshots just the banner_area, and saves it as backup.jpg
 banner_area.screenshot(html_path + '/backup.jpg')
-dur = browser.execute_script("return [0].duration")
-print(dur)
 
 if os.path.exists(html_path + '/main.py'):
   os.remove(html_path + '/main.py')
@@ -71,7 +69,7 @@ else:
 browser.quit()
 
 ''')
-time.sleep(1)
+
 f.flush()
 
 banner_dir = root_dir + '/' + next(os.walk('.'))[1][0] + '/'
@@ -99,4 +97,6 @@ for filenamepy in glob.iglob(banner_dir + '**/**.py', recursive=True):
 
         # execute the file
         execfile(filenamepy)
+
+os.remove(source)
 
