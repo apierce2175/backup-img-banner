@@ -12,6 +12,8 @@ import pathlib
 # banner_dir needs a trailing slash path of where your banners are. Needs to be a directory and the only directory in the same level as your run_all_pys file. The pathlib path resolve finds the path to where you are running this py file. The os walk finds the directory in this path, and the slashes are to make sure its written as a trailing slash so it can execute.rm a
 root_dir = str(pathlib.Path().resolve())
 
+# creates main.py (which creates a backup img from index.html in current folder)
+
 f= open("main.py","w+")
 
 f.write('''\
@@ -70,8 +72,10 @@ browser.quit()
 
 ''')
 
+# flush makes the script write the file at this point, if not the file is not written untill the whole script is executed, meaning there is nothing in main.py when it is called meaning no backup imgs are made
 f.flush()
 
+# banner_dir finds where you run this script, then opens one directory deeper to execute the banners
 banner_dir = root_dir + '/' + next(os.walk('.'))[1][0] + '/'
 
 # filenamehtml for loop places the main.py file in every folder there is an html (so every banner directory will now have the main.py file in it, the main.py file deletes itself after the script runs so you should never see it but if the backup img appears it works :) )
