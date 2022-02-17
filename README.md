@@ -27,3 +27,16 @@ for d in */ ; do
     done
     cd ../
 done
+
+### unzip all files
+
+ for d in * ; do    
+    open $d/ 
+ done
+
+### for a certain file type(remove all zip files)
+
+ for d in *.zip ; do
+    rm -rf $d
+ done
+
