@@ -6,6 +6,18 @@ from subprocess import call
 import shutil
 import time
 import pathlib
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+import time
+from PIL import Image
+import pathlib
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import os
+from selenium.webdriver.common.keys import Keys
 
 # this script places the py file to create backup images in every banner folder, then it runs every py file to create the backup img
 
@@ -30,15 +42,13 @@ from selenium.webdriver.support import expected_conditions as EC
 import os
 from selenium.webdriver.common.keys import Keys
 
-
-
-
 # FOR LOOP TO ADD A main.py TO EACH FOLDER
 # for d in */ ; do cp main.py $d/ done
 
 # browser says were using chrome for webdriver headlessly (you dont see the actions happen. This is faster and you can use computer while tasks happen in bg)
 options = Options()
 options.headless = True
+options.add_argument("window-size=1400,600")
 browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
 # current path is the file path of where this py file is located
@@ -68,6 +78,7 @@ if os.path.exists(html_path + '/main.py'):
 else:
   print(html_path + '/main.py')
   print('naa')
+
 browser.quit()
 
 ''')
