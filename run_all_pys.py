@@ -21,7 +21,7 @@ from selenium.webdriver.common.keys import Keys
 
 # this script places the py file to create backup images in every banner folder, then it runs every py file to create the backup img
 
-# banner_dir needs a trailing slash path of where your banners are. Needs to be a directory and the only directory in the same level as your run_all_pys file. The pathlib path resolve finds the path to where you are running this py file. The os walk finds the directory in this path, and the slashes are to make sure its written as a trailing slash so it can execute.rm a
+# The pathlib path resolve finds the path to where you are running this py file. The os walk finds the directory in this path
 root_dir = str(pathlib.Path().resolve())
 
 # creates main.py (which creates a backup img from index.html in current folder)
@@ -86,7 +86,7 @@ browser.quit()
 # flush makes the script write the file at this point, if not the file is not written untill the whole script is executed, meaning there is nothing in main.py when it is called meaning no backup imgs are made
 f.flush()
 
-# banner_dir finds where you run this script, then opens one directory deeper to execute the banners
+# banner_dir finds where you run this script (root_dir), then opens one directory deeper to execute the banners
 banner_dir = root_dir + '/' + next(os.walk('.'))[1][0] + '/'
 
 # filenamehtml for loop places the main.py file in every folder there is an html (so every banner directory will now have the main.py file in it, the main.py file deletes itself after the script runs so you should never see it but if the backup img appears it works :) )
@@ -95,7 +95,7 @@ for filenamehtml in glob.iglob(banner_dir + '**/**.html', recursive=True):
     destination = filenamehtml.replace("index.html", "main.py")
     shutil.copy( source , destination )
 
-# filenamepy runs every py file in current directory. these py files are the scripts that create the backup img.
+# filenamepy runs every py file in current directory. these py files are the scripts that create the backup img. isCopyMain and isRunPy are there so that these files are not auto run. We want to run every main py that is in the same directory as an html to create backup img there. We dont want to delete the source pys
 for filenamepy in glob.iglob(banner_dir + '**/**.py', recursive=True):
     isCopyMain = filenamepy == root_dir + "/main.py"
     isRunPy = filenamepy == root_dir + "/run_all_pys.py"
@@ -113,5 +113,6 @@ for filenamepy in glob.iglob(banner_dir + '**/**.py', recursive=True):
         # execute the file
         execfile(filenamepy)
 
+# remove all main.py files
 os.remove(source)
 
